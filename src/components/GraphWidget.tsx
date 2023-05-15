@@ -21,6 +21,16 @@ type GraphWidgetProps = {
       },
     ];
   
+    const layout = {
+        title: 'Line Chart',
+        xaxis: {
+          title: 'X-axis',
+        },
+        yaxis: {
+          title: 'Y-axis',
+        },
+      };
+
     const _handleDropdownSelection = (item: string) => {
         setDataTagId(item)
     };
@@ -43,7 +53,7 @@ type GraphWidgetProps = {
             />
         <Plot
           data={plotData}
-          layout={{ width: 500, height: 400, title: 'Line Chart' }}
+          layout={layout}
         />
       </div>
     );
