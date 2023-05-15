@@ -20,10 +20,22 @@ export default function WidgetContainer() {
     };
 
     if (type === "graph") {
-      newWidget.data = {
-        x: [1, 2, 3, 4, 5],
-        y: [1, 2, 3, 4, 5]
-      };
+      newWidget.data = [
+        {
+          x: [1, 2, 3, 4, 5],
+          y: [1, 3, 2, 4, 5],
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Line 1',
+        },
+        {
+          x: [1, 2, 3, 4, 5],
+          y: [2, 1, 4, 3, 2],
+          type: 'scatter',
+          mode: 'lines',
+          name: 'Line 2',
+        },
+      ];
     } else if (type === "table") {
       newWidget.data = [
         { name: "John", age: 25 },
@@ -49,7 +61,7 @@ export default function WidgetContainer() {
 
   return (
     <div>
-      <div>
+      <div className='mt-5'>
         <button onClick={() => handleAddWidget("graph")}>Add Graph Widget</button>
         <button onClick={() => handleAddWidget("table")}>Add Table Widget</button>
         <button onClick={() => handleAddWidget("form")}>Add Form Widget</button>
