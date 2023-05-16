@@ -61,7 +61,7 @@ export default function WidgetContainer() {
 
   return (
     <div>
-      <div className='mt-5'>
+      <div className='ml-5 mt-5 pt-1'>
         <button onClick={() => handleAddWidget("graph")}>Add Graph Widget</button>
         <button onClick={() => handleAddWidget("table")}>Add Table Widget</button>
         <button onClick={() => handleAddWidget("form")}>Add Form Widget</button>

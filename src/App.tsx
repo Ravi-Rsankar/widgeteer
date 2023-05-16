@@ -3,7 +3,7 @@ import WidgetContainer from './pages/Widgets';
 
 function App() {
     return (
-        <div className="App">
+        <div>
             <WidgetContainer />
         </div>
     );
