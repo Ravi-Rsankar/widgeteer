@@ -36,3 +36,11 @@
     transform: rotate(360deg);
   }
 }
+
+.addwidget {
+    position: fixed;
+    background: none;
+    right: 20px;
+    bottom: 20px;
+    z-index: 11;
+  }
