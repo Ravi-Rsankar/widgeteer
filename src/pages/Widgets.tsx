@@ -12,8 +12,10 @@ type Widget = {
 
 export default function WidgetContainer() {
     const [widgets, setWidgets] = React.useState<Widget[]>([]);
+    const [showWidgetOptions, setShowWidgetOptions] = useState(false);
 
     function handleAddWidget(type: string) {
+        setShowWidgetOptions(!showWidgetOptions)
         const newWidget: Widget = {
             key: widgets.length,
             type: type,
@@ -60,13 +62,12 @@ export default function WidgetContainer() {
         console.log(`Form submitted for widget with key: ${key}`);
     }
 
+    const handleConfigure = () => {
+        setShowWidgetOptions(!showWidgetOptions);
+    };
+
     return (
-        <div>
-            <div className='ml-5 mt-5 pt-1'>
-                <button onClick={() => handleAddWidget("graph")}>Add Graph Widget</button>
-                <button onClick={() => handleAddWidget("table")}>Add Table Widget</button>
-                <button onClick={() => handleAddWidget("form")}>Add Form Widget</button>
-            </div>
+        <div className='App'>
             {widgets.map((widget) => (
                 <div key={widget.key}>
                     {widget.type === "graph" && (
@@ -80,9 +81,19 @@ export default function WidgetContainer() {
                     )}
                 </div>
             ))}
-            <div className='addwidget'>
+            
+            <div className='addwidget' onClick={handleConfigure}>
                 <AddWidget />
             </div>
+            <>{showWidgetOptions}</>
+            {showWidgetOptions && (
+                <div className="icon-list">
+                    {/* Additional icons */}
+                    <i className="fas fa-chart-bar" onClick={() => handleAddWidget("graph")}></i>
+                    <i className="fas fa-table" onClick={() => handleAddWidget("table")}></i>
+                    <i className="fas fa-file-alt" onClick={() => handleAddWidget("form")}></i>
+                </div>
+            )}
         </div>
     );
 }

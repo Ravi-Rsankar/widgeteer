@@ -38,6 +38,9 @@
     ]
   },
   "devDependencies": {
+    "@svgr/plugin-svgo": "^8.0.1",
+    "@svgr/webpack": "^8.0.1",
+    "@types/react": "^18.2.6",
     "@types/react-plotly.js": "^2.6.0"
   }
 }
