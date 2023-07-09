@@ -8,18 +8,22 @@ type Widget = {
     key: number;
     data: any;
     type: any;
+    position: any;
 };
 
 export default function WidgetContainer() {
     const [widgets, setWidgets] = React.useState<Widget[]>([]);
     const [showWidgetOptions, setShowWidgetOptions] = useState(false);
+    const [draggedWidget, setDraggedWidget] = useState(null);
+    const spacing = 500;
 
     function handleAddWidget(type: string) {
         setShowWidgetOptions(!showWidgetOptions)
         const newWidget: Widget = {
             key: widgets.length,
             type: type,
-            data: null
+            data: null,
+            position: { x: 0, y: 0 },
         };
 
         if (type === "graph") {
@@ -66,22 +70,82 @@ export default function WidgetContainer() {
         setShowWidgetOptions(!showWidgetOptions);
     };
 
+    const handleDrop = (event: any) => {
+        event.preventDefault();
+        const droppedWidgetId = event.dataTransfer.getData('text/plain');
+        const droppedWidget = widgets.find((widget) => widget.key === parseInt(droppedWidgetId));
+        if (droppedWidget) {
+            const updatedWidgets = widgets.map((widget) => {
+                if (widget.key === droppedWidget.key) {
+                    return {
+                        ...widget,
+                        position: {
+                            x: event.clientX,
+                            y: event.clientY,
+                        },
+                    };
+                }
+                return widget;
+            });
+            setWidgets(updatedWidgets);
+        }
+        setDraggedWidget(null);
+    };
+
+    const handleDragStart = (event: any, widget: any) => {
+        event.dataTransfer.setData('text/plain', widget.key.toString());
+        setDraggedWidget(widget);
+    };
+
+    const handleDragEnd = () => {
+        setDraggedWidget(null);
+    };
+
     return (
-        <div className='App'>
-            {widgets.map((widget) => (
-                <div key={widget.key}>
+        <div
+            onDragOver={(event) => event.preventDefault()}
+            onDrop={handleDrop}
+            style={{ width: '100%', height: '100%', position: 'relative' }}
+        >
+            {widgets.map((widget, index) => (
+                <div key={widget.key}
+                    draggable
+                    onDragStart={(event) => handleDragStart(event, widget)}
+                    onDragEnd={handleDragEnd}
+                    style={{
+                        position: 'absolute',
+                        left: index * spacing,
+                        top: 0,
+                    }}
+                >
                     {widget.type === "graph" && (
-                        <GraphWidget data={widget.data} />
+                        <GraphWidget
+                            data={widget.data}
+                            // draggableProps={{
+                            //     onDragStart: (event: any) => handleDragStart(event, widget),
+                            //     onDragEnd: handleDragEnd,
+                            // }}
+                        />
                     )}
                     {widget.type === "table" && (
-                        <TableWidget data={widget.data} />
+                        <TableWidget data={widget.data}
+                            // draggableProps={{
+                            //     onDragStart: (event: any) => handleDragStart(event, widget),
+                            //     onDragEnd: handleDragEnd,
+                            // }}
+                        />
                     )}
                     {widget.type === "form" && (
-                        <FormWidget fields={widget.data.fields} onSubmit={() => handleFormSubmit(widget.key)} />
+                        <FormWidget fields={widget.data.fields} onSubmit={() => handleFormSubmit(widget.key)}
+                            // draggableProps={{
+                            //     onDragStart: (event) => handleDragStart(event, widget),
+                            //     onDragEnd: handleDragEnd,
+                            // }} 
+                        />
                     )}
                 </div>
             ))}
-            
+
             <div className='addwidget' onClick={handleConfigure}>
                 <AddWidget />
             </div>
